@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intermediate Algebra: Quadratic Equations</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load MathJax for rendering LaTeX formulas -->
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <style>
+        /* Custom styles for aesthetic appeal */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+        }
+        .lesson-card {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .lesson-card:hover {
+            transform: translateY(-5px);
+        }
+        .formula-box {
+            background-color: #e0f2fe; /* Light blue background */
+            border-left: 5px solid #0284c7; /* Strong blue accent */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="text-center mb-10 bg-white p-6 rounded-xl lesson-card">
+        <h1 class="text-4xl font-extrabold text-blue-700">Intermediate Algebra: Conquering Quadratic Equations</h1>
+        <p class="text-xl mt-2 text-gray-600">Standard Form: \($ax^2 + bx + c = 0\) where \(a \neq 0\)</p>
+    </header>
+
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- SECTION 1: Factoring -->
+        <section class="lesson-card bg-white p-6 rounded-xl lg:col-span-2">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">1. Method One: Solving by Factoring</h2>
+            <p class="mb-4 text-gray-700">Factoring is your first and fastest tool. It relies on the <strong class="text-blue-600">Zero Product Property (ZPP)</strong>: If \(A \cdot B = 0\), then either \(A=0\) or \(B=0\).</p>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-4">Interactive Practice: Factoring</h3>
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <p class="mb-3">Solve the example equation: <strong class="text-lg text-red-600">\(x^2 + 5x + 6 = 0\)</strong></p>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Solution 1 (\(x_1\)):</label>
+                        <input type="number" id="factoring-sol1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="Enter solution 1">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Solution 2 (\(x_2\)):</label>
+                        <input type="number" id="factoring-sol2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="Enter solution 2">
+                    </div>
+                </div>
+                
+                <button onclick="checkFactoring()" class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150">
+                    Check My Solutions
+                </button>
+                <p id="factoring-feedback" class="mt-3 font-medium text-center"></p>
+            </div>
+        </section>
+
+        <!-- SECTION 2 & 3: Formula and Discriminant -->
+        <section class="lesson-card bg-white p-6 rounded-xl lg:col-span-1">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">2. Quadratic Formula & 3. Discriminant</h2>
+            
+            <div class="formula-box p-4 rounded-lg mb-6">
+                <h3 class="text-xl font-bold text-blue-800 mb-2">The Universal Backup Plan</h3>
+                <p class="text-center text-2xl font-mono text-blue-900">
+                    \[x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\]
+                </p>
+            </div>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-4">Interactive Tool: Discriminant Checker</h3>
+            <p class="text-sm text-gray-600 mb-3">Enter the coefficients \(a\), \(b\), and \(c\) to find the nature of the solutions.</p>
+
+            <div class="space-y-3">
+                <input type="number" id="a-coeff" class="block w-full rounded-md p-2 border" placeholder="Coefficient a (e.g., 1)">
+                <input type="number" id="b-coeff" class="block w-full rounded-md p-2 border" placeholder="Coefficient b (e.g., 2)">
+                <input type="number" id="c-coeff" class="block w-full rounded-md p-2 border" placeholder="Coefficient c (e.g., -4)">
+                
+                <button onclick="calculateDiscriminant()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150">
+                    Calculate Discriminant (\(\Delta\))
+                </button>
+                
+                <div id="discriminant-result" class="mt-3 p-3 rounded-lg font-medium hidden">
+                    <p>Discriminant (\(\Delta\)): <strong id="delta-value" class="text-lg"></strong></p>
+                    <p>Nature of Solutions: <strong id="solution-nature" class="text-lg"></strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Complex Solutions -->
+        <section class="lesson-card bg-white p-6 rounded-xl lg:col-span-3">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">3. Complex Number Solutions (\(i = \sqrt{-1}\))</h2>
+            <p class="mb-4 text-gray-700">When the Discriminant (\(\Delta\)) is negative, the solutions involve the imaginary unit \(i\).</p>
+            
+            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
+                <p class="font-bold text-yellow-800 mb-2">Rule:</p>
+                <p>Example: Simplify \(\sqrt{-49}\)</p>
+                <p class="text-lg mt-2 font-mono">\(\sqrt{-49} = \sqrt{49} \cdot \sqrt{-1} = 7i\)</p>
+            </div>
+        </section>
+        
+        <!-- SECTION 5: Application Problems -->
+        <section class="lesson-card bg-white p-6 rounded-xl lg:col-span-3">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">4. Application Problems (Making Math Real)</h2>
+            <p class="mb-4 text-gray-700">Quadratics describe real-world scenarios like the path of a projectile. The key is to correctly set up the equation.</p>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-4">Application Scenario: The Fenced Area</h3>
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-300">
+                <p class="mb-3 font-semibold">
+                    A farmer wants to fence a rectangular area of 100 square feet. She knows the length must be 15 feet longer than the width (\(w\)). What is the correct quadratic equation to solve for the width?
+                </p>
+                <div class="space-y-2" id="app-quiz-options">
+                    <div class="flex items-center">
+                        <input id="option-a" type="radio" name="app-quiz" value="a" class="w-4 h-4 text-blue-600">
+                        <label for="option-a" class="ml-3 text-gray-800">\(w^2 + 15w + 100 = 0\)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="option-b" type="radio" name="app-quiz" value="b" class="w-4 h-4 text-blue-600">
+                        <label for="option-b" class="ml-3 text-gray-800">\(w^2 + 15w - 100 = 0\)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="option-c" type="radio" name="app-quiz" value="c" class="w-4 h-4 text-blue-600">
+                        <label for="option-c" class="ml-3 text-gray-800">\(w^2 - 15w + 100 = 0\)</label>
+                    </div>
+                </div>
+                <button onclick="checkApplication()" class="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150">
+                    Check Setup
+                </button>
+                <p id="app-feedback" class="mt-3 font-medium text-center"></p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center mt-10 p-4 text-gray-500 text-sm">
+        You've completed the introductory overview. Keep practicing!
+    </footer>
+
+    <script>
+        // --- FACTORING INTERACTIVITY ---
+        function checkFactoring() {
+            const sol1 = parseFloat(document.getElementById('factoring-sol1').value);
+            const sol2 = parseFloat(document.getElementById('factoring-sol2').value);
+            const feedbackEl = document.getElementById('factoring-feedback');
+
+            // Correct solutions for x^2 + 5x + 6 = 0 are x=-2 and x=-3
+            const correct1 = -3;
+            const correct2 = -2;
+
+            const isCorrect = (sol1 === correct1 && sol2 === correct2) || (sol1 === correct2 && sol2 === correct1);
+
+            if (isNaN(sol1) || isNaN(sol2)) {
+                feedbackEl.textContent = "Please enter both solutions.";
+                feedbackEl.className = 'mt-3 font-medium text-center text-yellow-600';
+                return;
+            }
+
+            if (isCorrect) {
+                feedbackEl.innerHTML = `Great job! \((x+3)(x+2) = 0\), so the solutions are \($x = ${correct1}\) and \($x = ${correct2}\).`;
+                feedbackEl.className = 'mt-3 font-medium text-center text-green-600';
+            } else {
+                feedbackEl.innerHTML = `Not quite. Remember, \((x+3)(x+2) = 0\). Check your signs!`;
+                feedbackEl.className = 'mt-3 font-medium text-center text-red-600';
+            }
+
+            // Tell MathJax to re-render the dynamic content
+            if (window.MathJax) {
+                MathJax.typeset();
+            }
+        }
+
+        // --- DISCRIMINANT INTERACTIVITY ---
+        function calculateDiscriminant() {
+            const a = parseFloat(document.getElementById('a-coeff').value);
+            const b = parseFloat(document.getElementById('b-coeff').value);
+            const c = parseFloat(document.getElementById('c-coeff').value);
+            const resultEl = document.getElementById('discriminant-result');
+            const deltaValueEl = document.getElementById('delta-value');
+            const natureEl = document.getElementById('solution-nature');
+
+            resultEl.classList.add('hidden'); // Hide until calculation is ready
+
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                deltaValueEl.textContent = "Error";
+                natureEl.textContent = "Please enter valid numbers for a, b, and c.";
+                resultEl.className = 'mt-3 p-3 rounded-lg font-medium bg-red-100 text-red-800';
+                resultEl.classList.remove('hidden');
+                return;
+            }
+            if (a === 0) {
+                deltaValueEl.textContent = "Error";
+                natureEl.textContent = "If a=0, it's a linear equation, not a quadratic!";
+                resultEl.className = 'mt-3 p-3 rounded-lg font-medium bg-red-100 text-red-800';
+                resultEl.classList.remove('hidden');
+                return;
+            }
+
+            // Calculate Discriminant: Delta = b^2 - 4ac
+            const delta = (b * b) - (4 * a * c);
+            deltaValueEl.textContent = delta;
+
+            let nature = "";
+            let bgColor = "";
+            let textColor = "";
+
+            if (delta > 0) {
+                nature = "Two distinct real solutions. (\(x_1 \neq x_2\))";
+                bgColor = "bg-green-100";
+                textColor = "text-green-800";
+            } else if (delta === 0) {
+                nature = "One real solution (a double root).";
+                bgColor = "bg-yellow-100";
+                textColor = "text-yellow-800";
+            } else { // delta < 0
+                nature = "Two non-real complex solutions. (Involving \(i\))";
+                bgColor = "bg-red-100";
+                textColor = "text-red-800";
+            }
+            
+            natureEl.textContent = nature;
+            resultEl.className = `mt-3 p-3 rounded-lg font-medium ${bgColor} ${textColor}`;
+            resultEl.classList.remove('hidden');
+
+            // Tell MathJax to re-render the dynamic content
+            if (window.MathJax) {
+                MathJax.typeset();
+            }
+        }
+
+        // --- APPLICATION INTERACTIVITY ---
+        function checkApplication() {
+            const options = document.getElementsByName('app-quiz');
+            let selectedValue = null;
+            const feedbackEl = document.getElementById('app-feedback');
+
+            for (const option of options) {
+                if (option.checked) {
+                    selectedValue = option.value;
+                    break;
+                }
+            }
+
+            // Correct setup: Area = L * W. L = W + 15. Area = 100.
+            // (W + 15) * W = 100  -> W^2 + 15W = 100 -> W^2 + 15W - 100 = 0.
+            const correctAnswer = 'b';
+
+            if (!selectedValue) {
+                feedbackEl.textContent = "Please select an option.";
+                feedbackEl.className = 'mt-3 font-medium text-center text-yellow-600';
+                return;
+            }
+
+            if (selectedValue === correctAnswer) {
+                feedbackEl.innerHTML = 'Correct! Area = (w + 15)w. Setting it to zero gives: \($w^2 + 15w - 100 = 0\).';
+                feedbackEl.className = 'mt-3 font-medium text-center text-green-600';
+            } else {
+                feedbackEl.innerHTML = 'Incorrect. Remember to set the entire expression equal to zero: \(w^2 + 15w - 100 = 0\).';
+                feedbackEl.className = 'mt-3 font-medium text-center text-red-600';
+            }
+
+            // Tell MathJax to re-render the dynamic content
+            if (window.MathJax) {
+                MathJax.typeset();
+            }
+        }
+    </script>
+</body>
+</html>
