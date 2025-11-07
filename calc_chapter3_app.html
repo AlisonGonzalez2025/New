@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus Chapter 3 Interactive Summary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: #f8f9fa;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theorem-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .theorem-title {
+            font-size: 1.3em;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .example-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .real-world-box {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .interactive-demo {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        canvas {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            background: white;
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+
+        .quiz-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .question {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .option {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .score {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin: 20px 0 10px 0;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            line-height: 1.8;
+        }
+
+        p {
+            line-height: 1.8;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Calculus Chapter 3</h1>
+            <p class="subtitle">Applications of Derivatives: Interactive Summary</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" onclick="showSection('overview')">Overview</button>
+            <button class="nav-btn" onclick="showSection('first-derivative')">First Derivative</button>
+            <button class="nav-btn" onclick="showSection('second-derivative')">Second Derivative</button>
+            <button class="nav-btn" onclick="showSection('asymptotes')">Asymptotes</button>
+            <button class="nav-btn" onclick="showSection('optimization')">Optimization</button>
+            <button class="nav-btn" onclick="showSection('quiz')">Assessment</button>
+        </nav>
+
+        <div class="content">
+            <!-- Overview Section -->
+            <div id="overview" class="section active">
+                <h2>Chapter Overview</h2>
+                <p>This chapter explores how derivatives help us understand function behavior and solve real-world optimization problems.</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>🔍 First Derivatives</h3>
+                        <p>Determine where functions increase, decrease, and find relative extrema (peaks and valleys).</p>
+                    </div>
+                    <div class="card">
+                        <h3>📈 Second Derivatives</h3>
+                        <p>Analyze concavity to understand how curves bend and identify inflection points.</p>
+                    </div>
+                    <div class="card">
+                        <h3>∞ Asymptotes</h3>
+                        <p>Find vertical and horizontal asymptotes to understand function behavior at extremes.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🎯 Optimization</h3>
+                        <p>Maximize profits, minimize costs, and solve real-world business problems.</p>
+                    </div>
+                </div>
+
+                <div class="real-world-box">
+                    <h3>🌍 Real-World Applications</h3>
+                    <ul>
+                        <li><strong>Business:</strong> Maximizing revenue and profit</li>
+                        <li><strong>Medicine:</strong> Optimal drug dosage timing</li>
+                        <li><strong>Engineering:</strong> Minimizing material costs</li>
+                        <li><strong>Economics:</strong> Finding equilibrium points</li>
+                        <li><strong>Manufacturing:</strong> Optimal production levels</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- First Derivative Section -->
+            <div id="first-derivative" class="section">
+                <h2>3.1 First Derivatives: Finding Extrema</h2>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Theorem 1: Increasing/Decreasing Test</div>
+                    <p><strong>If f'(x) > 0</strong> on an interval I, then <strong>f is increasing</strong> on I.</p>
+                    <p><strong>If f'(x) < 0</strong> on an interval I, then <strong>f is decreasing</strong> on I.</p>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Critical Values</div>
+                    <p>A <strong>critical value</strong> c occurs when:</p>
+                    <ul>
+                        <li>f'(c) = 0 (horizontal tangent), OR</li>
+                        <li>f'(c) does not exist</li>
+                    </ul>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">First-Derivative Test for Extrema</div>
+                    <p><strong>Relative Minimum:</strong> f'(x) changes from negative to positive</p>
+                    <p><strong>Relative Maximum:</strong> f'(x) changes from positive to negative</p>
+                    <p><strong>Neither:</strong> f'(x) has the same sign on both sides</p>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Interactive Demo: Explore Function Behavior</h3>
+                    <p>Adjust the parameters to see how the derivative affects the function:</p>
+                    <label>a = <span id="aValue">1</span></label>
+                    <input type="range" min="-3" max="3" value="1" step="0.1" class="slider" id="aSlider">
+                    <label>b = <span id="bValue">0</span></label>
+                    <input type="range" min="-5" max="5" value="0" step="0.1" class="slider" id="bSlider">
+                    <p class="formula">f(x) = ax² + bx</p>
+                    <canvas id="firstDerivCanvas" width="600" height="400"></canvas>
+                    <p><strong>Red:</strong> Function f(x) | <strong>Blue:</strong> Derivative f'(x)</p>
+                </div>
+
+                <div class="real-world-box">
+                    <h3>💊 Real-World Example: Drug Concentration</h3>
+                    <p><strong>Scenario:</strong> A drug is administered with concentration C(t) = 25te^(-0.04t) ng/mL.</p>
+                    <p><strong>Question:</strong> When does the drug reach peak concentration?</p>
+                    <p><strong>Solution:</strong></p>
+                    <ol>
+                        <li>Find C'(t) = 25e^(-0.04t)(1 - 0.04t)</li>
+                        <li>Set C'(t) = 0: 1 - 0.04t = 0 → t = 25 minutes</li>
+                        <li>C''(25) < 0, confirming a maximum</li>
+                        <li><strong>Answer:</strong> Peak concentration of 229.92 ng/mL at t = 25 minutes</li>
+                    </ol>
+                </div>
+
+                <div class="example-box">
+                    <h3>💼 Business Example: Stereo Sales</h3>
+                    <p><strong>Given:</strong> Price p(x) = 1000 - x, Cost C(x) = 3000 + 2x</p>
+                    <p><strong>Find:</strong> Maximum profit</p>
+                    <p><strong>Solution:</strong></p>
+                    <ol>
+                        <li>Revenue: R(x) = x(1000 - x) = 1000x - x²</li>
+                        <li>Profit: P(x) = R(x) - C(x) = -x² + 998x - 3000</li>
+                        <li>P'(x) = -2x + 998 = 0 → x = 499 units</li>
+                        <li>Maximum profit: P(499) = $245,501</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Second Derivative Section -->
+            <div id="second-derivative" class="section">
+                <h2>3.2 Second Derivatives: Concavity</h2>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Theorem 4: Test for Concavity</div>
+                    <p><strong>If f''(x) > 0</strong> on interval I, the graph is <strong>concave up</strong> (smiling ☺)</p>
+                    <p><strong>If f''(x) < 0</strong> on interval I, the graph is <strong>concave down</strong> (frowning ☹)</p>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Theorem 5: Second-Derivative Test</div>
+                    <p>At a critical point c where f'(c) = 0:</p>
+                    <ul>
+                        <li><strong>f''(c) > 0</strong> → f(c) is a relative minimum</li>
+                        <li><strong>f''(c) < 0</strong> → f(c) is a relative maximum</li>
+                        <li><strong>f''(c) = 0</strong> → Test is inconclusive (use First-Derivative Test)</li>
+                    </ul>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Theorem 6: Points of Inflection</div>
+                    <p>Inflection points occur where concavity changes. They must occur at points where:</p>
+                    <ul>
+                        <li>f''(x₀) = 0, OR</li>
+                        <li>f''(x₀) does not exist</li>
+                    </ul>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Interactive Demo: Concavity Explorer</h3>
+                    <p>See how the second derivative determines concavity:</p>
+                    <label>Coefficient = <span id="concaveValue">1</span></label>
+                    <input type="range" min="-2" max="2" value="1" step="0.1" class="slider" id="concaveSlider">
+                    <p class="formula">f(x) = (coefficient)x³ - 3x</p>
+                    <canvas id="secondDerivCanvas" width="600" height="400"></canvas>
+                    <p><strong>Concave up (f'' > 0):</strong> Curve bends upward</p>
+                    <p><strong>Concave down (f'' < 0):</strong> Curve bends downward</p>
+                </div>
+
+                <div class="real-world-box">
+                    <h3>📊 Real-World: Revenue Growth Analysis</h3>
+                    <p><strong>Scenario:</strong> A company's revenue function is R(t) = -t³ + 12t² + 100t (in thousands)</p>
+                    <p><strong>Analysis:</strong></p>
+                    <ul>
+                        <li>R'(t) = -3t² + 24t + 100 (rate of revenue growth)</li>
+                        <li>R''(t) = -6t + 24 (acceleration of growth)</li>
+                        <li>R''(t) = 0 when t = 4 (inflection point)</li>
+                        <li><strong>Interpretation:</strong> Revenue growth accelerates until year 4, then decelerates</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Asymptotes Section -->
+            <div id="asymptotes" class="section">
+                <h2>3.3 Asymptotes and Rational Functions</h2>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Vertical Asymptotes</div>
+                    <p>Line x = a is a vertical asymptote if:</p>
+                    <p class="formula">lim[x→a⁺] f(x) = ±∞ OR lim[x→a⁻] f(x) = ±∞</p>
+                    <p><strong>How to find:</strong> Look for values where denominator = 0 (but numerator ≠ 0)</p>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Horizontal Asymptotes</div>
+                    <p>Line y = b is a horizontal asymptote if:</p>
+                    <p class="formula">lim[x→∞] f(x) = b OR lim[x→-∞] f(x) = b</p>
+                    <p><strong>Key difference:</strong> Graphs may cross horizontal asymptotes, but never vertical ones!</p>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Special Functions</div>
+                    <p><strong>Exponential:</strong> f(x) = ae^(bx) has horizontal asymptote y = 0</p>
+                    <p><strong>Logarithmic:</strong> f(x) = ln(x - a) has vertical asymptote x = a</p>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Interactive Demo: Asymptote Visualization</h3>
+                    <p>Explore rational functions and their asymptotes:</p>
+                    <label>Numerator degree = <span id="numDegValue">1</span></label>
+                    <input type="range" min="0" max="2" value="1" step="1" class="slider" id="numDegSlider">
+                    <label>Denominator degree = <span id="denDegValue">1</span></label>
+                    <input type="range" min="1" max="2" value="1" step="1" class="slider" id="denDegSlider">
+                    <canvas id="asymptoteCanvas" width="600" height="400"></canvas>
+                    <p><strong>Red dashed:</strong> Vertical asymptotes | <strong>Green dashed:</strong> Horizontal asymptotes</p>
+                </div>
+
+                <div class="real-world-box">
+                    <h3>🏭 Real-World: Average Cost Function</h3>
+                    <p><strong>Scenario:</strong> A factory has fixed costs of $10,000 and variable costs of $50 per unit.</p>
+                    <p><strong>Average cost:</strong> A(x) = (10000 + 50x)/x = 10000/x + 50</p>
+                    <p><strong>Analysis:</strong></p>
+                    <ul>
+                        <li><strong>Vertical asymptote:</strong> x = 0 (can't produce 0 units)</li>
+                        <li><strong>Horizontal asymptote:</strong> y = 50 (minimum average cost)</li>
+                        <li><strong>Interpretation:</strong> As production increases, average cost approaches $50/unit</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>Finding Asymptotes Example</h3>
+                    <p><strong>Function:</strong> f(x) = (2x² + 1)/(x² - 4)</p>
+                    <p><strong>Vertical Asymptotes:</strong> x² - 4 = 0 → x = ±2</p>
+                    <p><strong>Horizontal Asymptote:</strong> Degrees equal → y = 2/1 = 2</p>
+                </div>
+            </div>
+
+            <!-- Optimization Section -->
+            <div id="optimization" class="section">
+                <h2>3.4 & 3.5 Optimization</h2>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Absolute Extrema</div>
+                    <p><strong>Absolute Maximum:</strong> f(c) ≥ f(x) for all x in domain</p>
+                    <p><strong>Absolute Minimum:</strong> f(c) ≤ f(x) for all x in domain</p>
+                    <p><strong>Extreme-Value Theorem:</strong> If f is continuous on [a,b], then both absolute max and min exist</p>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Maximum-Minimum Principle 2</div>
+                    <p>If f'(c) = 0 is the only critical point in interval I:</p>
+                    <ul>
+                        <li><strong>f''(c) < 0</strong> → f(c) is absolute maximum</li>
+                        <li><strong>f''(c) > 0</strong> → f(c) is absolute minimum</li>
+                    </ul>
+                </div>
+
+                <div class="theorem-box">
+                    <div class="theorem-title">Strategy for Optimization Problems</div>
+                    <ol>
+                        <li>Read carefully and make a drawing if relevant</li>
+                        <li>List variables, constants, and units</li>
+                        <li>Write equation for quantity Q to optimize</li>
+                        <li>Express Q as function of one variable</li>
+                        <li>Use derivative tests to find extrema</li>
+                    </ol>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Interactive Demo: Box Volume Optimization</h3>
+                    <p>Cut squares from corners of 8×8 cardboard to maximize box volume:</p>
+                    <label>Cut size (x) = <span id="cutValue">1.33</span> inches</label>
+                    <input type="range" min="0" max="4" value="1.33" step="0.01" class="slider" id="cutSlider">
+                    <p><strong>Volume = x(8-2x)² = <span id="volumeValue">0</span> in³</strong></p>
+                    <canvas id="boxCanvas" width="600" height="400"></canvas>
+                    <p><strong>Optimal cut size:</strong> x ≈ 1.33 inches → Maximum volume ≈ 74.07 in³</p>
+                </div>
+
+                <div class="real-world-box">
+                    <h3>🎬 Real-World: Theater Revenue Optimization</h3>
+                    <p><strong>Given:</strong></p>
+                    <ul>
+                        <li>Current price: $26, attendance: 1000 people</li>
+                        <li>Each $1 price drop adds 50 customers</li>
+                        <li>Average concession spending: $4 per person</li>
+                    </ul>
+                    <p><strong>Let x =</strong> number of $1 price drops</p>
+                    <p><strong>Revenue:</strong> R(x) = (26-x)(1000+50x) + 4(1000+50x)</p>
+                    <p><strong>Solution:</strong> Find R'(x) = 0 to maximize total revenue</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>💊 Pharmacology Example</h3>
+                    <p><strong>Drug Concentration:</strong> C(t) = 25te^(-0.04t) ng/mL</p>
+                    <p><strong>Steps:</strong></p>
+                    <ol>
+                        <li>C'(t) = 25e^(-0.04t)(1 - 0.04t)</li>
+                        <li>Set C'(t) = 0: t = 25 minutes</li>
+                        <li>C''(25) < 0 confirms maximum</li>
+                        <li><strong>Result:</strong> Peak concentration 229.92 ng/mL at 25 min</li>
+                    </ol>
+                    <p><strong>Medical significance:</strong> Helps determine optimal re-dosing schedule</p>
+                </div>
+
+                <div class="real-world-box">
+                    <h3>💼 Business Applications</h3>
+                    <div class="grid">
+                        <div>
+                            <h4>Profit Maximization</h4>
+                            <p>P(x) = R(x) - C(x)</p>
+                            <p>Find x where P'(x) = 0</p>
+                        </div>
+                        <div>
+                            <h4>Cost Minimization</h4>
+                            <p>Average cost: A(x) = C(x)/x</p>
+                            <p>Minimize A(x)</p>
+                        </div>
+                        <div>
+                            <h4>Revenue Optimization</h4>
+                            <p>R(x) = x · p(x)</p>
+                            <p>Balance price vs. demand</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div id="quiz" class="section">
+                <h2>Assessment: Test Your Understanding</h2>
+                
+                <div class="quiz-container">
+                    <div class="question" id="q1">
+                        <h3>Question 1: First Derivative Test</h3>
+                        <p>If f'(x) changes from positive to negative at x = 3, what does this indicate?</p>
+                        <div class="option" onclick="checkAnswer(1, 'A', true)">A) Relative maximum at x = 3</div>
+                        <div class="option" onclick="checkAnswer(1, 'B', false)">B) Relative minimum at x = 3</div>
+                        <div class="option" onclick="checkAnswer(1, 'C', false)">C) Inflection point at x = 3</div>
+                        <div class="option" onclick="checkAnswer(1, 'D', false)">D) No extremum at x = 3</div>
+                    </div>
+
+                    <div class="question" id="q2">
+                        <h3>Question 2: Concavity</h3>
+                        <p>If f''(x) > 0 on an interval, the graph is:</p>
+                        <div class="option" onclick="checkAnswer(2, 'A', true)">A) Concave up</div>
+                        <div class="option" onclick="checkAnswer(2, 'B', false)">B) Concave down</div>
+                        <div class="option" onclick="checkAnswer(2, 'C', false)">C) Linear</div>
+                        <div class="option" onclick="checkAnswer(2, 'D', false)">D) Decreasing</div>
+                    </div>
+
+                    <div class="question" id="q3">
+                        <h3>Question 3: Critical Values</h3>
+                        <p>Which condition defines a critical value c?</p>
+                        <div class="option" onclick="checkAnswer(3, 'A', false)">A) f(c) = 0</div>
+                        <div class="option" onclick="checkAnswer(3, 'B', false)">B) f''(c) = 0</div>
+                        <div class="option" onclick="checkAnswer(3, 'C', true)">C) f'(c) = 0 or f'(c) doesn't exist</div>
+                        <div class="option" onclick="checkAnswer(3, 'D', false)">D) f is continuous at c</div>
+                    </div>
+
+                    <div class="question" id="q4">
+                        <h3>Question 4: Asymptotes</h3>
+                        <p>For f(x) = (x+1)/(x-2), what is the vertical asymptote?</p>
+                        <div class="option" onclick="checkAnswer(4, 'A', false)">A) x = -1</div>
+                        <div class="option" onclick="checkAnswer(4, 'B', true)">B) x = 2</div>
+                        <div class="option" onclick="checkAnswer(4, 'C', false)">C) y = 1</div>
+                        <div class="option" onclick="checkAnswer(4, 'D', false)">D) No vertical asymptote</div>
+                    </div>
+
+                    <div class="question" id="q5">
+                        <h3>Question 5: Optimization</h3>
+                        <p>A business has profit function P(x) = -x² + 100x - 500. What production level maximizes profit?</p>
+                        <div class="option" onclick="checkAnswer(5, 'A', false)">A) x = 25</div>
+                        <div class="option" onclick="checkAnswer(5, 'B', true)">B) x = 50</div>
+                        <div class="option" onclick="checkAnswer(5, 'C', false)">C) x = 100</div>
+                        <div class="option" onclick="checkAnswer(5, 'D', false)">D) x = 200</div>
+                    </div>
+
+                    <div class="question" id="q6">
+                        <h3>Question 6: Second Derivative Test</h3>
+                        <p>At critical point c, if f'(c) = 0 and f''(c) > 0, then:</p>
+                        <div class="option" onclick="checkAnswer(6, 'A', false)">A) Relative maximum at c</div>
+                        <div class="option" onclick="checkAnswer(6, 'B', true)">B) Relative minimum at c</div>
+                        <div class="option" onclick="checkAnswer(6, 'C', false)">C) Inflection point at c</div>
+                        <div class="option" onclick="checkAnswer(6, 'D', false)">D) Test is inconclusive</div>
+                    </div>
+
+                    <div class="question" id="q7">
+                        <h3>Question 7: Application</h3>
+                        <p>For drug concentration C(t) = 25te^(-0.04t), when does peak concentration occur?</p>
+                        <div class="option" onclick="checkAnswer(7, 'A', false)">A) t = 10 minutes</div>
+                        <div class="option" onclick="checkAnswer(7, 'B', false)">B) t = 20 minutes</div>
+                        <div class="option" onclick="checkAnswer(7, 'C', true)">C) t = 25 minutes</div>
+                        <div class="option" onclick="checkAnswer(7, 'D', false)">D) t = 50 minutes</div>
+                    </div>
+
+                    <div class="question" id="q8">
+                        <h3>Question 8: Horizontal Asymptotes</h3>
+                        <p>What is the horizontal asymptote of f(x) = (3x² + 2)/(x² - 1)?</p>
+                        <div class="option" onclick="checkAnswer(8, 'A', false)">A) y = 0</div>
+                        <div class="option" onclick="checkAnswer(8, 'B', false)">B) y = 1</div>
+                        <div class="option" onclick="checkAnswer(8, 'C', false)">C) y = 2</div>
+                        <div class="option" onclick="checkAnswer(8, 'D', true)">D) y = 3</div>
+                    </div>
+
+                    <div class="score" id="scoreDisplay">Score: 0/8</div>
+                    <button class="btn" onclick="resetQuiz()">Reset Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let attempted = {};
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function checkAnswer(questionNum, option, isCorrect) {
+            const questionDiv = document.getElementById(`q${questionNum}`);
+            const options = questionDiv.querySelectorAll('.option');
+            
+            // If already attempted, don't allow re-attempt
+            if (attempted[questionNum]) return;
+            
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            
+            event.target.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            if (isCorrect && !attempted[questionNum]) {
+                score++;
+                attempted[questionNum] = true;
+            }
+            
+            updateScore();
+        }
+
+        function updateScore() {
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/8`;
+        }
+
+        function resetQuiz() {
+            score = 0;
+            attempted = {};
+            
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                opt.style.pointerEvents = 'auto';
+            });
+            
+            updateScore();
+        }
+
+        // First Derivative Interactive Demo
+        const canvas1 = document.getElementById('firstDerivCanvas');
+        const ctx1 = canvas1.getContext('2d');
+        const aSlider = document.getElementById('aSlider');
+        const bSlider = document.getElementById('bSlider');
+
+        function drawFirstDerivGraph() {
+            const a = parseFloat(aSlider.value);
+            const b = parseFloat(bSlider.value);
+            
+            document.getElementById('aValue').textContent = a.toFixed(1);
+            document.getElementById('bValue').textContent = b.toFixed(1);
+            
+            ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+            
+            // Draw axes
+            ctx1.strokeStyle = '#000';
+            ctx1.lineWidth = 1;
+            ctx1.beginPath();
+            ctx1.moveTo(0, canvas1.height/2);
+            ctx1.lineTo(canvas1.width, canvas1.height/2);
+            ctx1.moveTo(canvas1.width/2, 0);
+            ctx1.lineTo(canvas1.width/2, canvas1.height);
+            ctx1.stroke();
+            
+            const scale = 30;
+            const centerX = canvas1.width/2;
+            const centerY = canvas1.height/2;
+            
+            // Draw function f(x) = ax² + bx
+            ctx1.strokeStyle = '#dc3545';
+            ctx1.lineWidth = 3;
+            ctx1.beginPath();
+            for (let px = 0; px < canvas1.width; px++) {
+                const x = (px - centerX) / scale;
+                const y = a * x * x + b * x;
+                const py = centerY - y * scale;
+                if (px === 0) ctx1.moveTo(px, py);
+                else ctx1.lineTo(px, py);
+            }
+            ctx1.stroke();
+            
+            // Draw derivative f'(x) = 2ax + b
+            ctx1.strokeStyle = '#007bff';
+            ctx1.lineWidth = 2;
+            ctx1.beginPath();
+            for (let px = 0; px < canvas1.width; px++) {
+                const x = (px - centerX) / scale;
+                const y = 2 * a * x + b;
+                const py = centerY - y * scale;
+                if (px === 0) ctx1.moveTo(px, py);
+                else ctx1.lineTo(px, py);
+            }
+            ctx1.stroke();
+            
+            // Mark critical point if it exists
+            if (a !== 0) {
+                const critX = -b / (2 * a);
+                const critY = a * critX * critX + b * critX;
+                const px = centerX + critX * scale;
+                const py = centerY - critY * scale;
+                
+                if (px >= 0 && px <= canvas1.width && py >= 0 && py <= canvas1.height) {
+                    ctx1.fillStyle = '#28a745';
+                    ctx1.beginPath();
+                    ctx1.arc(px, py, 6, 0, 2 * Math.PI);
+                    ctx1.fill();
+                }
+            }
+        }
+
+        aSlider.addEventListener('input', drawFirstDerivGraph);
+        bSlider.addEventListener('input', drawFirstDerivGraph);
+        drawFirstDerivGraph();
+
+        // Second Derivative Interactive Demo
+        const canvas2 = document.getElementById('secondDerivCanvas');
+        const ctx2 = canvas2.getContext('2d');
+        const concaveSlider = document.getElementById('concaveSlider');
+
+        function drawSecondDerivGraph() {
+            const coef = parseFloat(concaveSlider.value);
+            document.getElementById('concaveValue').textContent = coef.toFixed(1);
+            
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+            
+            // Draw axes
+            ctx2.strokeStyle = '#000';
+            ctx2.lineWidth = 1;
+            ctx2.beginPath();
+            ctx2.moveTo(0, canvas2.height/2);
+            ctx2.lineTo(canvas2.width, canvas2.height/2);
+            ctx2.moveTo(canvas2.width/2, 0);
+            ctx2.lineTo(canvas2.width/2, canvas2.height);
+            ctx2.stroke();
+            
+            const scale = 40;
+            const centerX = canvas2.width/2;
+            const centerY = canvas2.height/2;
+            
+            // Draw function f(x) = coef*x³ - 3x
+            ctx2.strokeStyle = '#764ba2';
+            ctx2.lineWidth = 3;
+            ctx2.beginPath();
+            for (let px = 0; px < canvas2.width; px++) {
+                const x = (px - centerX) / scale;
+                const y = coef * x * x * x - 3 * x;
+                const py = centerY - y * scale;
+                if (px === 0) ctx2.moveTo(px, py);
+                else ctx2.lineTo(px, py);
+            }
+            ctx2.stroke();
+            
+            // Mark inflection point at x = 0
+            ctx2.fillStyle = '#ffc107';
+            ctx2.beginPath();
+            ctx2.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+            ctx2.fill();
+            
+            // Add concavity indicators
+            ctx2.font = '14px Arial';
+            ctx2.fillStyle = '#28a745';
+            if (coef > 0) {
+                ctx2.fillText('Concave Up →', centerX + 50, centerY - 80);
+                ctx2.fillText('← Concave Down', centerX - 150, centerY + 80);
+            } else if (coef < 0) {
+                ctx2.fillText('Concave Down →', centerX + 50, centerY - 80);
+                ctx2.fillText('← Concave Up', centerX - 150, centerY + 80);
+            }
+        }
+
+        concaveSlider.addEventListener('input', drawSecondDerivGraph);
+        drawSecondDerivGraph();
+
+        // Asymptote Interactive Demo
+        const canvas3 = document.getElementById('asymptoteCanvas');
+        const ctx3 = canvas3.getContext('2d');
+        const numDegSlider = document.getElementById('numDegSlider');
+        const denDegSlider = document.getElementById('denDegSlider');
+
+        function drawAsymptoteGraph() {
+            const numDeg = parseInt(numDegSlider.value);
+            const denDeg = parseInt(denDegSlider.value);
+            
+            document.getElementById('numDegValue').textContent = numDeg;
+            document.getElementById('denDegValue').textContent = denDeg;
+            
+            ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
+            
+            const scale = 50;
+            const centerX = canvas3.width/2;
+            const centerY = canvas3.height/2;
+            
+            // Draw axes
+            ctx3.strokeStyle = '#000';
+            ctx3.lineWidth = 1;
+            ctx3.beginPath();
+            ctx3.moveTo(0, centerY);
+            ctx3.lineTo(canvas3.width, centerY);
+            ctx3.moveTo(centerX, 0);
+            ctx3.lineTo(centerX, canvas3.height);
+            ctx3.stroke();
+            
+            // Draw vertical asymptote at x = 2
+            ctx3.strokeStyle = '#dc3545';
+            ctx3.lineWidth = 2;
+            ctx3.setLineDash([5, 5]);
+            ctx3.beginPath();
+            ctx3.moveTo(centerX + 2 * scale, 0);
+            ctx3.lineTo(centerX + 2 * scale, canvas3.height);
+            ctx3.stroke();
+            
+            // Draw horizontal asymptote based on degrees
+            if (numDeg < denDeg) {
+                // y = 0
+                ctx3.strokeStyle = '#28a745';
+                ctx3.beginPath();
+                ctx3.moveTo(0, centerY);
+                ctx3.lineTo(canvas3.width, centerY);
+                ctx3.stroke();
+            } else if (numDeg === denDeg) {
+                // y = leading coefficient ratio (assume 1)
+                ctx3.strokeStyle = '#28a745';
+                ctx3.beginPath();
+                ctx3.moveTo(0, centerY - scale);
+                ctx3.lineTo(canvas3.width, centerY - scale);
+                ctx3.stroke();
+            }
+            
+            ctx3.setLineDash([]);
+            
+            // Draw function f(x) = x^numDeg / (x-2)^denDeg
+            ctx3.strokeStyle = '#667eea';
+            ctx3.lineWidth = 3;
+            ctx3.beginPath();
+            let started = false;
+            for (let px = 0; px < canvas3.width; px++) {
+                const x = (px - centerX) / scale;
+                if (Math.abs(x - 2) < 0.1) continue; // Skip near asymptote
+                
+                let y;
+                if (numDeg === 0) y = 1 / Math.pow(x - 2, denDeg);
+                else if (numDeg === 1) y = x / Math.pow(x - 2, denDeg);
+                else y = x * x / Math.pow(x - 2, denDeg);
+                
+                const py = centerY - y * scale;
+                
+                if (py >= -100 && py <= canvas3.height + 100) {
+                    if (!started) {
+                        ctx3.moveTo(px, py);
+                        started = true;
+                    } else {
+                        ctx3.lineTo(px, py);
+                    }
+                } else {
+                    started = false;
+                }
+            }
+            ctx3.stroke();
+        }
+
+        numDegSlider.addEventListener('input', drawAsymptoteGraph);
+        denDegSlider.addEventListener('input', drawAsymptoteGraph);
+        drawAsymptoteGraph();
+
+        // Box Optimization Demo
+        const canvas4 = document.getElementById('boxCanvas');
+        const ctx4 = canvas4.getContext('2d');
+        const cutSlider = document.getElementById('cutSlider');
+
+        function drawBoxGraph() {
+            const x = parseFloat(cutSlider.value);
+            document.getElementById('cutValue').textContent = x.toFixed(2);
+            
+            const volume = x * Math.pow(8 - 2*x, 2);
+            document.getElementById('volumeValue').textContent = volume.toFixed(2);
+            
+            ctx4.clearRect(0, 0, canvas4.width, canvas4.height);
+            
+            // Draw volume function
+            const scale = 20;
+            const offsetY = 50;
+            
+            // Axes
+            ctx4.strokeStyle = '#000';
+            ctx4.lineWidth = 1;
+            ctx4.beginPath();
+            ctx4.moveTo(50, canvas4.height - offsetY);
+            ctx4.lineTo(canvas4.width - 20, canvas4.height - offsetY);
+            ctx4.moveTo(50, canvas4.height - offsetY);
+            ctx4.lineTo(50, 20);
+            ctx4.stroke();
+            
+            // Labels
+            ctx4.font = '12px Arial';
+            ctx4.fillStyle = '#000';
+            ctx4.fillText('x (cut size)', canvas4.width - 100, canvas4.height - offsetY + 20);
+            ctx4.save();
+            ctx4.translate(20, canvas4.height/2);
+            ctx4.rotate(-Math.PI/2);
+            ctx4.fillText('Volume', 0, 0);
+            ctx4.restore();
+            
+            // Draw function V(x) = x(8-2x)²
+            ctx4.strokeStyle = '#667eea';
+            ctx4.lineWidth = 3;
+            ctx4.beginPath();
+            for (let px = 50; px < canvas4.width - 20; px++) {
+                const xVal = (px - 50) / 100;
+                if (xVal > 4) break;
+                const v = xVal * Math.pow(8 - 2*xVal, 2);
+                const py = canvas4.height - offsetY - v * scale / 10;
+                if (px === 50) ctx4.moveTo(px, py);
+                else ctx4.lineTo(px, py);
+            }
+            ctx4.stroke();
+            
+            // Mark current point
+            const px = 50 + x * 100;
+            const py = canvas4.height - offsetY - volume * scale / 10;
+            ctx4.fillStyle = '#dc3545';
+            ctx4.beginPath();
+            ctx4.arc(px, py, 6, 0, 2 * Math.PI);
+            ctx4.fill();
+            
+            // Mark optimal point (x ≈ 1.33)
+            const optX = 4/3;
+            const optV = optX * Math.pow(8 - 2*optX, 2);
+            const optPx = 50 + optX * 100;
+            const optPy = canvas4.height - offsetY - optV * scale / 10;
+            ctx4.fillStyle = '#28a745';
+            ctx4.beginPath();
+            ctx4.arc(optPx, optPy, 6, 0, 2 * Math.PI);
+            ctx4.fill();
+            ctx4.fillText('Maximum', optPx - 30, optPy - 10);
+        }
+
+        cutSlider.addEventListener('input', drawBoxGraph);
+        drawBoxGraph();
+    </script>
+</body>
+</html>
